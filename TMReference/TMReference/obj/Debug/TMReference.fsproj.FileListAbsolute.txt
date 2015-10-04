@@ -1,0 +1,8 @@
+C:\seq\TMReference\TMReference\bin\Debug\TMReference.exe.config
+C:\seq\TMReference\TMReference\bin\Debug\TMReference.XML
+C:\seq\TMReference\TMReference\bin\Debug\TMReference.exe
+C:\seq\TMReference\TMReference\bin\Debug\TMReference.pdb
+C:\seq\TMReference\TMReference\bin\Debug\FSharp.Core.dll
+C:\seq\TMReference\TMReference\bin\Debug\FSharp.Core.xml
+C:\seq\TMReference\TMReference\obj\Debug\TMReference.exe
+C:\seq\TMReference\TMReference\obj\Debug\TMReference.pdb

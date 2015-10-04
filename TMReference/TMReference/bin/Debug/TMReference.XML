@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>TMReference</name></assembly>
+<members>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Amyris.tmcore.OligoTask">
+<summary>
+ Inputs to the primer designer. 
+ temp: template sequence
+ align: how to align the primer with respect to the template
+ strand: on what strand to search the primer
+ offset: 
+ sequencePenalties: a float [] option of the same size as temp, giving nucleotide specific penalties. If None, an array of 0. will be used.
+    These penalties are only used in the CENTERLEFT and CENTERRIGHT ANCHOR types.
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Amyris.tmcore.Oligo">
+<summary>
+ Final oligo design result with the oligo, its melting temp and offset into the template
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Amyris.tmcore.PrimerParams">
+<summary>Parameters used to design primers. These include penalties used to 
+rank primers using the various criteria and settings for the calculation of Tm. 
+</summary>
+<typeparam name="lengthPenalty"> Penalty parameter for difference from targeted primer length. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="tmPenalty"> Penalty parameter for difference from targeted Tm. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="positionPenalty"> Penalty parameter for difference from targeted position. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="polyLengthThreshold"> Upper admissible length for polynucleotide. </typeparam> 
+<typeparam name="polyPenalty"> Penalty for going beyong the polynucleotide length limit. </typeparam> 
+<typeparam name="threePrimeUnstablePenalty"> Penalty for having an unstable 3' end. </typeparam> 
+<typeparam name="ATPenalty"> Penalty for the primer ending on a A or T. </typeparam> 
+<typeparam name="maxLength"> Maximum primer length. </typeparam> 
+<typeparam name="minLength"> Minimum primer length. </typeparam> 
+<typeparam name="targetLength"> Target primer length. </typeparam> 
+<typeparam name="monovalentConc"> Monovalent cation concentration (Na+, K+) in mol/L. </typeparam> 
+<typeparam name="divalentConc"> Divalent cation concentration (Mg2+, Ca2+) in mol/L. </typeparam> 
+<typeparam name="primerConc"> Primer concentration in mol/L. </typeparam> 
+<typeparam name="templateConc"> Template concentration in mol/L. </typeparam> 
+<typeparam name="dNTPConc"> dNTP concentration in mol/L. </typeparam> 
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:Amyris.tmcore.temp(Amyris.tmcore.PrimerParams,System.Char[],System.Int32)">
+<summary>
+ Get oligo Tm for the first N bases of oligo array for given parameters
+</summary>
+</member>
+<member name="M:Amyris.tmcore._temp(Amyris.tmcore.PrimerParams,System.Char[],System.Int32)">
+<summary>
+ Get oligo Tm for the first N bases of oligo array
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:Amyris.tmcore.monoSaltCorrect(System.Double,System.Double,System.Double,System.Char[],System.Int32)">
+<summary>
+ Monovalent salt correction
+</summary>
+</member>
+<member name="M:Amyris.tmcore.gcN2Temp(System.Int32,System.Int32)">
+<summary>
+ Calc temp given a GC and oligo length
+</summary>
+</member>
+<member name="M:Amyris.tmcore.wikiTemp1000(System.Double,System.Double,System.Char[],System.Int32)">
+<summary>
+ NN implementation with 1M Na+ concentration
+ http://www.pnas.org/content/95/4/1460.full
+ http://en.wikipedia.org/wiki/DNA_melting
+</summary>
+</member>
+<member name="M:Amyris.tmcore.selfComp(System.Char[],System.Int32)">
+<summary>
+ Test if an oligo is self complementary
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="M:Amyris.tmcore.HSpair(System.Char,System.Char)">
+<summary>
+ Santa lucia PNAS Feb 17 1998 vol 95 no 3. 1460-1465
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="P:Amyris.tmcore.defaultParams">
+<summary>Parameters used to design primers. These include penalties used to 
+rank primers using the various criteria and settings for the calculation of Tm. 
+</summary>
+<typeparam name="lengthPenalty"> Penalty parameter for difference from targeted primer length. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="tmPenalty"> Penalty parameter for difference from targeted Tm. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="positionPenalty"> Penalty parameter for difference from targeted position. The higher the parameter the lower the penalty. </typeparam> 
+<typeparam name="polyLengthThreshold"> Upper admissible length for polynucleotide. </typeparam> 
+<typeparam name="polyPenalty"> Penalty for going beyong the polynucleotide length limit. </typeparam> 
+<typeparam name="threePrimeUnstablePenalty"> Penalty for having an unstable 3' end. </typeparam> 
+<typeparam name="ATPenalty"> Penalty for the primer ending on a A or T. </typeparam> 
+<typeparam name="maxLength"> Maximum primer length. </typeparam> 
+<typeparam name="minLength"> Minimum primer length. </typeparam> 
+<typeparam name="targetLength"> Target primer length. </typeparam> 
+<typeparam name="monovalentConc"> Monovalent cation concentration (Na+, K+) in mol/L. </typeparam> 
+<typeparam name="divalentConc"> Divalent cation concentration (Mg2+, Ca2+) in mol/L. </typeparam> 
+<typeparam name="primerConc"> Primer concentration in mol/L. </typeparam> 
+<typeparam name="templateConc"> Template concentration in mol/L. </typeparam> 
+<typeparam name="dNTPConc"> dNTP concentration in mol/L. </typeparam> 
+</member>
+<member name="M:Amyris.tmcore.logMolar(System.Double)">
+<summary>
+ Take natural log of a molar constant producing a unitless value
+</summary>
+</member>
+<member name="M:Amyris.tmcore.gcN(System.Char[],System.Int32)">
+<summary>
+ fGC - proportion of GC bases in first N bases of primer
+</summary>
+</member>
+<member name="M:Amyris.tmcore.gc(System.Char[])">
+<summary>
+ fGC - proportion of GC bases in full primer array
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Amyris.tmcore">
+<summary>
+ Core primer Tm calculation
+</summary>
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="">
+
+</member>
+<member name="T:Main">
+
+</member>
+</members>
+</doc>
