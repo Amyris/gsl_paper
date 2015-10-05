@@ -7,9 +7,6 @@
 
 <!-- RyseComponentRequest.xsd
 
-    Validate this document with the W3C XSV XML Schema validator:
-    http://www.w3.org/2001/03/webdata/xsv
-
     2/17/2010 Mike Bissell, Brian Hawthorne
     Created this schema. Validated initial revision.
 
@@ -59,8 +56,7 @@
                 Elements:
 
                 stitchRef - One or two Stitches, in order (A, then B). In the
-                    distant future we may permit more than two Stitches per
-                    Megastitch.
+                    future we may permit more than two Stitches per Megastitch.
 
 
                 Attributes:
@@ -68,22 +64,14 @@
                 id - A RyseComponentResponse will refer to this record by its
                     id. Each id must be unique to this document. When Thumper
                     generates a RyseComponentRequest, MegastitchSpecs will be
-                    identified as "MS.1234", where "1234" is the Megastitch id
-                    and PK to the corresponding row in the mega_stitch table.
+                    identified as "MS.1234", where "1234" is the Megastitch id.
 
                 creator - Login name for this element's original creator. If an
                     equivalent Megastitch already exists, this is ignored.
-                    Strain requires this field.
 
                 expression - A textual specification of this Megastitch.
-                    There are tools to support several different syntaxes;
-                    Thumper's Roughage is the most popular, and Darren has also
-                    been working on at least one advanced GSL dialect.
-                    Presently this field is ignored on input (from the GSL
-                    stack) but supplied on output (from Thumper, e.g. to
-                    Strain or in response to a /rycod/megastitch_spec/id
-                    request). This field maps to the database column
-                    `thumper.mega_stitch.spec`.
+                    There are tools to support several different syntaxes,
+                    including GSL and Roughage.
 
             </xsd:documentation>
         </xsd:annotation>
@@ -102,7 +90,7 @@
     <xsd:complexType name="StitchSpec">
         <xsd:annotation>
             <xsd:documentation>
-                Specify a Stitch as an ordered sequence of one or more RABits.
+                Specify a Stitch as an ordered sequence of one or more Rabits.
 
 
                 Elements:
@@ -116,12 +104,10 @@
                 id - A RyseComponentResponse will refer to this record by its
                     id. Each id must be unique to this document. When Thumper
                     generates a RyseComponentRequest, StitchSpecs will be
-                    identified as "S.1234", where "1234" is the Stitch id
-                    and PK to the corresponding row in the stitch table.
+                    identified as "S.1234", where "1234" is the Stitch id.
 
                 creator - Login name for this element's original creator. If an
                     equivalent Stitch already exists, this is ignored.
-                    Strain requires this field.
 
             </xsd:documentation>
         </xsd:annotation>
@@ -143,16 +129,16 @@
     <xsd:complexType name="RabitSpec">
         <xsd:annotation>
             <xsd:documentation>
-                Specify a single RABit, either as a set of constraints, or
+                Specify a single Rabit, either as a set of constraints, or
                 as literal DNA, or somewhere in between.
 
 
                 Elements:
 
-                dnaElementSpec - Optionally supply DNA for new RABits here.
-                    If this RABit already exists, then the DNA details supplied
+                dnaElementSpec - Optionally supply DNA for new Rabits here.
+                    If this Rabit already exists, then the DNA details supplied
                     for this RabitSpec must perfectly match the existing part.
-                    If this RABit is new, and if this RabitSpec omits DNA
+                    If this Rabit is new, and if this RabitSpec omits DNA
                     details, then Thumper will attempt to fill in the details
                     automatically.
 
@@ -162,12 +148,10 @@
                 id - A RyseComponentResponse will refer to this record by its
                     id. Each id must be unique to this document. When Thumper
                     generates a RyseComponentRequest, RabitSpecs will be
-                    identified as "R.1234", where "1234" is the Rabit id
-                    and PK to the corresponding row in the rabit table.
+                    identified as "R.1234", where "1234" is the Rabit id.
 
                 creator - Login name for this element's original creator. If an
                     equivalent Rabit already exists, this is ignored.
-                    Strain requires this field.
 
             </xsd:documentation>
         </xsd:annotation>
@@ -221,12 +205,12 @@
     </xsd:complexType>
 
 
-    <!-- SIMPLE TYPES in support of RABit specification -->
+    <!-- SIMPLE TYPES in support of Rabit specification -->
 
     <xsd:simpleType name='RabitBreed'>
         <xsd:annotation>
             <xsd:documentation>
-                Constants identifying RABit breeds.
+                Constants identifying Rabit breeds.
 
                 label  | description
                 -------+--------------------------------------------------------
@@ -256,7 +240,7 @@
                 X      | Other/unknown
 
 
-                Additional polyketide synthase (PKS) breeds, for future use.
+                Additional polyketide synthase (PKS) breeds
 
                 label      | description
                 -----------+----------------------------------------------------
@@ -310,7 +294,7 @@
             <xsd:enumeration value="GR_SW"/>
             <xsd:enumeration value="GR_DS"/><!--gRNA cutting downstream -->
 
-            <!-- PKS breeds, for future use. -->
+            <!-- PKS breeds -->
             <xsd:enumeration value="KS"/>
             <xsd:enumeration value="L_KS-AT"/>
             <xsd:enumeration value="L_KS-AT+AT"/>
@@ -363,8 +347,6 @@
             <xsd:enumeration value="M"/>
             <xsd:enumeration value="N"/>
             <xsd:enumeration value="O"/>
-
-            <!-- New linkers added for Sunil, 8/5/13. -->
             <xsd:enumeration value="10"/>
             <xsd:enumeration value="11"/>
             <xsd:enumeration value="12"/>
@@ -375,13 +357,11 @@
             <xsd:enumeration value="17"/>
             <xsd:enumeration value="18"/>
             <xsd:enumeration value="19"/>
-
-            <!-- New linkers added for Max, 8/5/13. -->
             <xsd:enumeration value="X"/>
             <xsd:enumeration value="Y"/>
             <xsd:enumeration value="Z"/>
 
-            <!-- PKS linkers, for future use. -->
+            <!-- PKS linkers -->
             <xsd:enumeration value="P1"/>
             <xsd:enumeration value="P2"/>
             <xsd:enumeration value="P3"/>
@@ -394,10 +374,10 @@
             <xsd:enumeration value="P9"/>
             <xsd:enumeration value="PA"/>
 
-            <!-- Misc. purpose-specific linkers. See ryse.py for details. -->
+            <!-- Misc. purpose-specific linkers. Consult source for details. -->
             <xsd:enumeration value="G7"/>
 
-            <!-- LCR placeholder linker. 'MT' as in 'empty' string. -->
+            <!-- LCR placeholder nonlinker. 'MT' as in 'empty' string. -->
             <xsd:enumeration value="MT"/>
 
         </xsd:restriction>
@@ -408,17 +388,14 @@
         <xsd:annotation>
             <xsd:documentation>
                 Supported template sources. To add a new source, to Thumper's
-                database, please contact Mike or Brian.
+                database, please use the web API.
 
                 Example: "CAT1" or "CENPK2". Thumper will return an error
                 message if the token you supply is not in its `source` table.
 
-                Please note that Thumper's `source` and `sequence` tables are
-                uncurated, so they're full of nasty cruft. Rycod will reject
-                your request if your stated SpeciesVariant for a fully specified
-                but preexisting RABit does not match the RABit's source. In
-                this case the problem may be dirty data in the `dna_element`
-                table; we may need to fix a bad `dna_element.source_id` value.
+                Rycod will reject your request if your stated SpeciesVariant for
+                a fully specified but preexisting Rabit does not match that
+                Rabit's source.
             </xsd:documentation>
         </xsd:annotation>
 
@@ -429,7 +406,8 @@
     <xsd:simpleType name='Direction'>
         <xsd:annotation>
             <xsd:documentation>
-                Constants to differentiate forward RABits from reverse RABits.
+                Constants to differentiate forward Rabits from reverse Rabits.
+                Direction is relative to parent context.
             </xsd:documentation>
         </xsd:annotation>
 
@@ -455,7 +433,7 @@
     </xsd:simpleType>
 
 
-    <!-- COMPLEX TYPES in support of RABit specification -->
+    <!-- COMPLEX TYPES in support of Rabit specification -->
 
     <xsd:complexType name="DnaElementSpec">
         <xsd:annotation>
@@ -512,12 +490,11 @@
                 The full primer is the concatenation of tail + body.
 
                 The tail includes the primer linker sequence, which should
-                correspond to a dna_sequence from the link table.
+                correspond to known linker sequence.
 
                 Note that the downstream primer's tail will be the reverse
-                complement of a `link.dna_sequence` value. A tail may include
-                extra DNA in addition to the portion that corresponds to a
-                linker.
+                complement of known linker sequence. A tail may include extra
+                DNA in addition to the portion that corresponds to a linker.
 
                 The following ASCII diagram depicts this primer model:
 
@@ -540,4 +517,3 @@
 
 
 </xsd:schema>
-
