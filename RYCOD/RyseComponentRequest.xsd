@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    targetNamespace="http://www.amyris.com/xmlns/rycod/v1.0.0"
+    xmlns="http://www.amyris.com/xmlns/rycod/v1.0.0"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified">
+
+<!-- RyseComponentRequest.xsd
+
+    2/17/2010 Mike Bissell, Brian Hawthorne
+    Created this schema. Validated initial revision.
+
+    2015-2015 Mike Bissell
+    Added various breeds and linkers. Fine-tuned some multiplicity constraints.
+
+    5/5/2015 Mike Bissell
+    Added UTF-8 encoding declaration.
+    Modified targetNamespace + xmlns.
+-->
+
+    <!-- ELEMENTS -->
+
+    <!-- The root element for the request XML doc. -->
+    <xsd:element name="ryseComponentRequest" type="RyseComponentRequest"/>
+
+    <!-- Root element typedef. -->
+    <xsd:complexType name="RyseComponentRequest">
+        <xsd:annotation>
+            <xsd:documentation>
+                A request for RYSE components. Thumper must attempt to get or
+                create matching parts for each Spec and respond with a
+                RyseComponentResponse message describing either each matching
+                part or, if there were errors, a list of problems encountered
+                while processing the request.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="rabitSpec" type="RabitSpec" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="stitchSpec" type="StitchSpec" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="megastitchSpec" type="MegastitchSpec" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+
+    </xsd:complexType>
+
+
+    <!-- RYSE component types -->
+
+    <xsd:complexType name="MegastitchSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                Specify a Megastitch as a pair of two Stitches.
+                The first StitchSpec becomes Stitch A, the second B.
+
+
+                Elements:
+
+                stitchRef - One or two Stitches, in order (A, then B). In the
+                    future we may permit more than two Stitches per Megastitch.
+
+
+                Attributes:
+
+                id - A RyseComponentResponse will refer to this record by its
+                    id. Each id must be unique to this document. When Thumper
+                    generates a RyseComponentRequest, MegastitchSpecs will be
+                    identified as "MS.1234", where "1234" is the Megastitch id.
+
+                creator - Login name for this element's original creator. If an
+                    equivalent Megastitch already exists, this is ignored.
+
+                expression - A textual specification of this Megastitch.
+                    There are tools to support several different syntaxes,
+                    including GSL and Roughage.
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="stitchRef" type="StitchRef" minOccurs="1" maxOccurs="2"/>
+        </xsd:sequence>
+
+        <xsd:attribute name="id" type="xsd:ID" use="required"/>
+        <xsd:attribute name="creator" type="xsd:token" use="optional"/>
+        <xsd:attribute name="expression" type="xsd:normalizedString" use="optional"/>
+
+    </xsd:complexType>
+
+
+    <xsd:complexType name="StitchSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                Specify a Stitch as an ordered sequence of one or more Rabits.
+
+
+                Elements:
+
+                rabitRef - One or more Rabits, in the order they appear in the
+                    Stitch.
+
+
+                Attributes:
+
+                id - A RyseComponentResponse will refer to this record by its
+                    id. Each id must be unique to this document. When Thumper
+                    generates a RyseComponentRequest, StitchSpecs will be
+                    identified as "S.1234", where "1234" is the Stitch id.
+
+                creator - Login name for this element's original creator. If an
+                    equivalent Stitch already exists, this is ignored.
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="rabitRef" type="RabitRef" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+
+        <!--
+            A RyseComponentResponse will refer to this record by its id.
+            Each id must be unique to this document.
+        -->
+        <xsd:attribute name="id" type="xsd:ID" use="required"/>
+        <xsd:attribute name="creator" type="xsd:token" use="optional"/>
+
+    </xsd:complexType>
+
+
+    <xsd:complexType name="RabitSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                Specify a single Rabit, either as a set of constraints, or
+                as literal DNA, or somewhere in between.
+
+
+                Elements:
+
+                dnaElementSpec - Optionally supply DNA for new Rabits here.
+                    If this Rabit already exists, then the DNA details supplied
+                    for this RabitSpec must perfectly match the existing part.
+                    If this Rabit is new, and if this RabitSpec omits DNA
+                    details, then Thumper will attempt to fill in the details
+                    automatically.
+
+
+                Attributes:
+
+                id - A RyseComponentResponse will refer to this record by its
+                    id. Each id must be unique to this document. When Thumper
+                    generates a RyseComponentRequest, RabitSpecs will be
+                    identified as "R.1234", where "1234" is the Rabit id.
+
+                creator - Login name for this element's original creator. If an
+                    equivalent Rabit already exists, this is ignored.
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="dnaElementSpec" type="DnaElementSpec" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+
+        <xsd:attribute name="name" use="required">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:token">
+                    <xsd:minLength value = "1"/>
+                    <xsd:maxLength value = "67"/>
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:attribute>
+        <xsd:attribute name="breed" type="RabitBreed" use="optional"/>
+        <xsd:attribute name="upstreamLink" type="RyseLinker" use="required"/>
+        <xsd:attribute name="downstreamLink" type="RyseLinker" use="required"/>
+        <xsd:attribute name="direction" type="Direction" use="required"/>
+
+        <xsd:attribute name="id" type="xsd:ID" use="required"/>
+        <xsd:attribute name="creator" type="xsd:token" use="optional"/>
+
+    </xsd:complexType>
+
+
+    <!-- Pointer types -->
+
+    <xsd:complexType name="RabitRef">
+        <xsd:annotation>
+            <xsd:documentation>
+                An indirect reference (pointer) to a RabitSpec entity elsewhere
+                in this request.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:attribute name="rabitSpec" type="xsd:IDREF" use="required"/>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="StitchRef">
+        <xsd:annotation>
+            <xsd:documentation>
+                An indirect reference (pointer) to a StitchSpec entity elsewhere
+                in this request.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:attribute name="stitchSpec" type="xsd:IDREF" use="required"/>
+    </xsd:complexType>
+
+
+    <!-- SIMPLE TYPES in support of Rabit specification -->
+
+    <xsd:simpleType name='RabitBreed'>
+        <xsd:annotation>
+            <xsd:documentation>
+                Constants identifying Rabit breeds.
+
+                label  | description
+                -------+--------------------------------------------------------
+                D      | 3' loci (downstream)
+                DS_CDS | Downstream coding sequence
+                E      | Tag (epitope)
+                EsT    | Tag with stop and terminator
+                G      | Gene
+                GHsT   | Gene with heterology, stop, and terminator
+                Gs     | Gene with stop
+                GsT    | Gene with stop and terminator
+                M      | Marker
+                P      | Promoter
+                PG     | Promoter gene
+                PGHsT  | Promoter gene with heterology, stop and terminator
+                PGs    | Promoter gene with stop
+                PGsT   | Promoter gene with stop and terminator
+                PP     | Divergent promoter
+                PsG    | Promoter gene (seamless)
+                PsGs   | Promoter gene w/ stop (seamless)
+                PsGsT  | Promoter gene w/ stop and terminator (seamless)
+                T      | Terminator
+                TP     | Terminator/promoter
+                TT     | Convergent terminator
+                U      | 5' loci (upstream)
+                V      | Entry vector
+                X      | Other/unknown
+
+
+                Additional polyketide synthase (PKS) breeds
+
+                label      | description
+                -----------+----------------------------------------------------
+                KS         | Ketosynthase
+                L_KS-AT    | KS-AT interdomain
+                L_KS-AT+AT | KS-AT interdomain + AT
+                AT         | Acetyltransferase
+                L_AT-DH    | AT DH interdomain
+                DH-MT      | Dehydratase half methyl transferase
+                MT-KR      | Half methyl transferase ketoreductase
+                ACP        | Acyl carrier protein
+                Con-Cterm  | Condensation domain
+                AT_DH-L    | AT with DH Linker
+                DH         | Dehydratase
+                DH-KR      | DH Linker with Ketoreductase
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="D"/>
+            <xsd:enumeration value="DS_CDS"/>
+            <xsd:enumeration value="E"/>
+            <xsd:enumeration value="EsT"/>
+            <xsd:enumeration value="G"/>
+            <xsd:enumeration value="GHsT"/>
+            <xsd:enumeration value="Gs"/>
+            <xsd:enumeration value="GsT"/>
+            <xsd:enumeration value="GHsT"/>
+
+            <xsd:enumeration value="M"/>
+            <xsd:enumeration value="P"/>
+            <xsd:enumeration value="PG"/>
+            <xsd:enumeration value="PGs"/>
+            <xsd:enumeration value="PGsT"/>
+            <xsd:enumeration value="PP"/>
+            <xsd:enumeration value="PsG"/>
+            <xsd:enumeration value="PsGs"/>
+            <xsd:enumeration value="PsGsT"/>
+            <xsd:enumeration value="T"/>
+            <xsd:enumeration value="TP"/>
+            <xsd:enumeration value="TT"/>
+            <xsd:enumeration value="U"/>
+            <xsd:enumeration value="V"/>
+            <xsd:enumeration value="X"/>
+
+            <!-- PKS breeds -->
+            <xsd:enumeration value="KS"/>
+            <xsd:enumeration value="L_KS-AT"/>
+            <xsd:enumeration value="L_KS-AT+AT"/>
+            <xsd:enumeration value="AT"/>
+            <xsd:enumeration value="L_AT-DH"/>
+            <xsd:enumeration value="DH-MT"/>
+            <xsd:enumeration value="MT-KR"/>
+            <xsd:enumeration value="ACP"/>
+            <xsd:enumeration value="Con-Cterm"/>
+            <xsd:enumeration value="AT_DH-L"/>
+            <xsd:enumeration value="DH"/>
+            <xsd:enumeration value="DH-KR"/>
+            <xsd:enumeration value="ER"/>
+            <xsd:enumeration value="KR"/>
+
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name='RyseLinker'>
+        <xsd:annotation>
+            <xsd:documentation>
+                Constants identifying each RYSE linker.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="0"/>
+            <xsd:enumeration value="1"/>
+            <xsd:enumeration value="2"/>
+            <xsd:enumeration value="3"/>
+            <xsd:enumeration value="4"/>
+            <xsd:enumeration value="5"/>
+            <xsd:enumeration value="6"/>
+            <xsd:enumeration value="7"/>
+            <xsd:enumeration value="8"/>
+            <xsd:enumeration value="9"/>
+            <xsd:enumeration value="A"/>
+            <xsd:enumeration value="B"/>
+            <xsd:enumeration value="C"/>
+            <xsd:enumeration value="D"/>
+            <xsd:enumeration value="E"/>
+            <xsd:enumeration value="F"/>
+            <xsd:enumeration value="G"/>
+            <xsd:enumeration value="H"/>
+            <xsd:enumeration value="I"/>
+            <xsd:enumeration value="J"/>
+            <xsd:enumeration value="K"/>
+            <xsd:enumeration value="L"/>
+            <xsd:enumeration value="M"/>
+            <xsd:enumeration value="N"/>
+            <xsd:enumeration value="O"/>
+            <xsd:enumeration value="10"/>
+            <xsd:enumeration value="11"/>
+            <xsd:enumeration value="12"/>
+            <xsd:enumeration value="13"/>
+            <xsd:enumeration value="14"/>
+            <xsd:enumeration value="15"/>
+            <xsd:enumeration value="16"/>
+            <xsd:enumeration value="17"/>
+            <xsd:enumeration value="18"/>
+            <xsd:enumeration value="19"/>
+            <xsd:enumeration value="X"/>
+            <xsd:enumeration value="Y"/>
+            <xsd:enumeration value="Z"/>
+
+            <!-- PKS linkers -->
+            <xsd:enumeration value="P1"/>
+            <xsd:enumeration value="P2"/>
+            <xsd:enumeration value="P3"/>
+            <xsd:enumeration value="P4"/>
+            <xsd:enumeration value="P5"/>
+            <xsd:enumeration value="P6"/>
+            <xsd:enumeration value="P6"/>
+            <xsd:enumeration value="P7"/>
+            <xsd:enumeration value="P8"/>
+            <xsd:enumeration value="P9"/>
+            <xsd:enumeration value="PA"/>
+
+            <!-- Misc. purpose-specific linkers. Consult source for details. -->
+            <xsd:enumeration value="G7"/>
+
+            <!-- LCR placeholder nonlinker. 'MT' as in 'empty' string. -->
+            <xsd:enumeration value="MT"/>
+
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name='SpeciesVariant'>
+        <xsd:annotation>
+            <xsd:documentation>
+                Supported template sources. To add a new source, to Thumper's
+                database, please use the web API.
+
+                Example: "CAT1" or "CENPK2". Thumper will return an error
+                message if the token you supply is not in its `source` table.
+
+                Rycod will reject your request if your stated SpeciesVariant for
+                a fully specified but preexisting Rabit does not match that
+                Rabit's source.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:restriction base="xsd:token"/>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name='Direction'>
+        <xsd:annotation>
+            <xsd:documentation>
+                Constants to differentiate forward Rabits from reverse Rabits.
+                Direction is relative to parent context.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="FWD"/>
+            <xsd:enumeration value="REV"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name='Dna'>
+        <xsd:annotation>
+            <xsd:documentation>
+                Represent a genetic sequence as a case-insensitive string.
+                Tolerate whitespace. Allow the empty string so that users
+                may specify empty PrimerSpec.tail sequences.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:restriction base='xsd:token'>
+            <xsd:pattern value='[aAtTgGcC \t\n]*'/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <!-- COMPLEX TYPES in support of Rabit specification -->
+
+    <xsd:complexType name="DnaElementSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                Specify a single DNA Element, the building block for a Rabit.
+
+
+                Elements
+
+                dnaSequence - Just the insert sequence. Do not include linkers.
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="upstreamPrimerSpec" type="PrimerSpec"/>
+            <xsd:element name="downstreamPrimerSpec" type="PrimerSpec"/>
+            <xsd:element name="dnaSequence" type="Dna"/>
+            <xsd:element name="quickChangeSpec" type="QuickChangeSpec" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+
+        <xsd:attribute name="speciesVariant" type="SpeciesVariant" use="required"/>
+
+    </xsd:complexType>
+
+
+    <xsd:complexType name="QuickChangeSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                A pair of interior primers used to rewrite a portion of the
+                template sequence.
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="forwardPrimerSpec"  type="PrimerSpec"/>
+            <xsd:element name="reversePrimerSpec"  type="PrimerSpec"/>
+        </xsd:sequence>
+
+    </xsd:complexType>
+
+
+    <xsd:complexType name="PrimerSpec">
+        <xsd:annotation>
+            <xsd:documentation>
+                A recipe for a PCR primer.
+
+
+                Elements
+
+                body - The part that primes.
+                tail - The part that hangs off and doesn't anneal.
+
+                The full primer is the concatenation of tail + body.
+
+                The tail includes the primer linker sequence, which should
+                correspond to known linker sequence.
+
+                Note that the downstream primer's tail will be the reverse
+                complement of known linker sequence. A tail may include extra
+                DNA in addition to the portion that corresponds to a linker.
+
+                The following ASCII diagram depicts this primer model:
+
+                        LLLLLLTTT
+                                 BBBBBBBBBBBBBBB
+
+                    L: Linker portion of the tail DNA
+                    T: Optional additional tail DNA
+                    B: Annealing body DNA
+
+            </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:sequence>
+            <xsd:element name="tail"  type="Dna" minOccurs="1" maxOccurs="1"/>
+            <xsd:element name="body"  type="Dna" minOccurs="1" maxOccurs="1"/>
+        </xsd:sequence>
+
+    </xsd:complexType>
+
+
+</xsd:schema>
